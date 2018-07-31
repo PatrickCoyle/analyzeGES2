@@ -7,9 +7,9 @@ Description: A package to assist with survey-weighted contingency table analysis
     for GES traffic accident data
 Depends:
     R (>= 3.2.5)
-License: NA
-Encoding: NA
-LazyData: NA
+License:
+Encoding:
+LazyData:
 Imports:
     WeightedROC,
     shiny,
