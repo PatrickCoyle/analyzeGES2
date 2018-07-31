@@ -6,8 +6,7 @@ Authors@R: person("Patrick", "Coyle", email = "patrick.coyle@temple.edu", role =
 Description: A package to assist with survey-weighted contingency table analysis
     for GES traffic accident data
 Depends: R (>= 3.2.5)
-License: None
-Encoding: None
+License: GPL-3
 LazyData: true
 Imports:
     WeightedROC,
