@@ -1,38 +1,53 @@
 #' The length of a string (in characters).
 #'
-#' @param fmla_list a list of formulas from which to build svyglm objects
-#' @param svydesignObj a svydesign object from which to creat a svyglm object
-#' @param test.set a data frame whose variables match the svydesignObj, which is used to build ROC curves based on prediction 
-#' @param x.lab x-axis label for the ggplot
-#' @param y.lab y-axis label for the ggplot
-#' @param main title for the ggplot
+#' @param response a character string identifying the response variable
+#' @param predictor_list a list whose elements are vectors of character strings specifying the desired predictor variables. A svyglm model is created for each element of the list.
+#' @param svydesignObj a svydesign object from which to create a svyglm object
+#' @param test.set a data frame whose variables match the svydesignObj, which is used to build ROC curves based on prediction
+#' @param plot a Boolean indicating whether to plot the ROC curves for each model
 #' @return A data frame of ROC curve values for each input formula, and a ggplot of these values
 #' @seealso \code{\link{predROC}} which this function wraps
 #' @examples
+#' data(list = c("GES2013.drivers.design", "GES2013.drivers"))
+#' response <- "DROWSY"
+#' predictor_list <- list(c ("HEAVY_TRUCK",  "INT_HWY",  "SEX_IM", "SPEEDREL"),
+#'                                  c ("HEAVY_TRUCK",  "INT_HWY",  "SEX_IM"))
+#' model_and_convert(response, predictor_list, GES2013.drivers.design, GES2013.drivers)
 #' @export
-model_and_convert <- function(fmla_list, svydesignObj, test.set,
-                              x.lab, y.lab, main)
+model_and_convert <- function(response, predictor_list, svydesignObj, test.set, plot = T)
 {
   options(survey.lonely.psu="adjust")
-  
-  newData <- subset(test.set, select=c(predictors, response, "WEIGHT"))
-  
-  for (i in 1:length(fmla_list))
+  pred <- vector("list")
+
+  for (i in 1:length(predictor_list))
   {
-    model <- survey::svyglm(fmla_list[[i]],
-                         family = quasibinomial(link = logit), 
+    newData <- subset(test.set, select=c(predictor_list[[i]], response, "WEIGHT"))
+    my_fmla <- formula(paste(response, "~", paste(predictor_list[[i]], collapse=' + ')))
+    model <- survey::svyglm(my_fmla,
+                         family = quasibinomial(link=logit),
                          design = svydesignObj)
     roc <- predROC(model, newData)
     auc <-  round(sum((sort(roc[, 1])[-1] - sort(roc[, 1])[-nrow(roc)]) * (sort(roc[, 2])[-1] + sort(roc[, 2])[-nrow(roc)])/2), digits=2)
-    pred[[i]] <- cbind(roc, AUC=rep(paste("AUC = ", auc), nrow(roc)))
+    pred[[i]] <- cbind(roc, AUC=rep(paste("Model ", i, "\nAUC = ", auc), nrow(roc)))
   }
-  
-  roc <- data.frame(matrix(unlist(lapply(pred, t)), ncol= 3, byrow=T), stringsAsFactors=FALSE)
-  ggplot2::ggplot(roc, aes(x = FPR, y = TPR)) + geom_line(aes(color=AUC), size=1.6) + 
-    theme_bw() +
-    scale_color_manual(values = wes_palette("Moonrise2")) + 
-    geom_abline() + 
-    guides(colour = guide_legend(override.aes = list(size = 10))) + 
-    theme(legend.title=element_blank(), aspect.ratio=1) +
-    labs(x = x.lab, y = y.lab, title = main) 
+
+  myroc <- data.frame(matrix(unlist(lapply(pred, t)), ncol= 3, byrow=T), stringsAsFactors=FALSE)
+  myroc[,1:2] <- matrix(as.numeric(unlist(myroc[,1:2])), ncol = 2)
+  names(myroc) <- c("FPR","TPR","AUC")
+
+  if (plot) {
+    p <- ggplot(data = myroc, aes(x = FPR, y = TPR, group = AUC, color = AUC)) +
+      # geom_line(aes(color=AUC), size=1.6) +
+      geom_line(size = 1.6) +
+      theme_bw() +
+      # scale_color_manual(values = wes_palette("Moonrise2")) +
+      geom_segment(x = 0, xend = 1, y = 0, yend = 1, color = "black", size = 0.25) +
+      guides(colour = guide_legend(override.aes = list(size = 10))) +
+      labs(x = "False Positive Rate", y = "True Positive Rate", title = "ROC Curves") +
+      theme(legend.title=element_blank(), aspect.ratio=1, plot.title = element_text(hjust = 0.5))
+
+    plot(p)
+  }
+
+  return(myroc)
 }

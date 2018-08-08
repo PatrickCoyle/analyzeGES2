@@ -3,8 +3,6 @@
 #' @param dir the target directory for the output
 #' @param desired.files a vector of .sas7bdat file names to merge together
 #' @return A data frame of merged .sas7bdat files
-#' @seealso
-#' @examples
 #' @export
 mergeGivenYear <- function(dir = getwd(), desired.files = c())
 {

@@ -1,11 +1,8 @@
 #' Run shiny function
-#'
+#' @examples
+#' runExample()
 #' @export
 runExample <- function() {
-  appDir <- system.file("shiny-examples", "GES_plotter", package = "analyzeGES")
-  if (appDir == "") {
-    stop("Could not find example directory. Try re-installing `analyzeGES`.", call. = FALSE)
-  }
-  
+  appDir <- paste0(find.package("analyzeGES"), "/shiny-examples/shiny_app")
   shiny::runApp(appDir, display.mode = "normal")
 }
