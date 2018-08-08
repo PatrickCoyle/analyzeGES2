@@ -2,11 +2,13 @@
 % Please edit documentation in R/runExample.R
 \name{runExample}
 \alias{runExample}
-\title{Run shiny function}
+\title{Run shiny app for exploring correlations in GES data sets}
 \usage{
 runExample()
 }
 \description{
-Run shiny function
+Run shiny app for exploring correlations in GES data sets
 }
-
+\examples{
+runExample()
+}

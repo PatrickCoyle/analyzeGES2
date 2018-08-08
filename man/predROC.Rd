@@ -2,7 +2,7 @@
 % Please edit documentation in R/predROC.R
 \name{predROC}
 \alias{predROC}
-\title{Helper function for WeightedROC::WeightedROC, to produce a data frame of ROC curve values based on a svyglm object and a test set}
+\title{Produce a data frame of ROC curve values based on a svyglm object and a test set}
 \usage{
 predROC(glm.obj, newData, plot = TRUE)
 }
@@ -11,12 +11,21 @@ predROC(glm.obj, newData, plot = TRUE)
 
 \item{newData}{a data frame whose variables are compatible with the svyglm object, for use in prediction}
 
-\item{pot}{a boolean indicating whether or not to generate a plot}
+\item{plot}{a boolean indicating whether or not to generate a plot}
 }
 \value{
 A data frame of ROC curve values based on a svyglm object and a test set
 }
 \description{
-Helper function for WeightedROC::WeightedROC, to produce a data frame of ROC curve values based on a svyglm object and a test set
+Produce a data frame of ROC curve values based on a svyglm object and a test set
 }
-
+\examples{
+data(list = c("GES2013.drivers.design", "GES2013.drivers"))
+model <- svyglm(DROWSY ~ HEAVY_TRUCK + INT_HWY + SEX_IM + SPEEDREL,
+                            family = quasibinomial(link=logit),
+                            design = GES2013.drivers.design)
+predROC(model,GES2013.drivers)
+}
+\seealso{
+\code{\link{WeightedROC:WeightedROC}}
+}

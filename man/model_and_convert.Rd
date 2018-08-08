@@ -4,28 +4,33 @@
 \alias{model_and_convert}
 \title{The length of a string (in characters).}
 \usage{
-model_and_convert(fmla_list, svydesignObj, test.set, x.lab, y.lab, main)
+model_and_convert(response, predictor_list, svydesignObj, test.set,
+  plot = T)
 }
 \arguments{
-\item{fmla_list}{a list of formulas from which to build svyglm objects}
+\item{response}{a character string identifying the response variable}
 
-\item{svydesignObj}{a svydesign object from which to creat a svyglm object}
+\item{predictor_list}{a list whose elements are vectors of character strings specifying the desired predictor variables. A svyglm model is created for each element of the list.}
+
+\item{svydesignObj}{a svydesign object from which to create a svyglm object}
 
 \item{test.set}{a data frame whose variables match the svydesignObj, which is used to build ROC curves based on prediction}
 
-\item{x.lab}{x-axis label for the ggplot}
-
-\item{y.lab}{y-axis label for the ggplot}
-
-\item{main}{title for the ggplot}
+\item{plot}{a Boolean indicating whether to plot the ROC curves for each model}
 }
 \value{
-A data frame of ROC curve values for each input formula, and a ggplot of these values
+A data frame of ROC curve values for each input formula
 }
 \description{
 The length of a string (in characters).
 }
-\seealso{
-\code{\link{predROC}} which this function wraps
+\examples{
+data(list = c("GES2013.drivers.design", "GES2013.drivers"))
+response <- "DROWSY"
+predictor_list <- list(c ("HEAVY_TRUCK",  "INT_HWY",  "SEX_IM", "SPEEDREL"),
+                                 c ("HEAVY_TRUCK",  "INT_HWY",  "SEX_IM"))
+model_and_convert(response, predictor_list, GES2013.drivers.design, GES2013.drivers)
 }
-
+\seealso{
+\code{\link{predROC}}
+}

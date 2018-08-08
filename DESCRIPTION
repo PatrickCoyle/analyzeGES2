@@ -22,4 +22,4 @@ Imports:
     dplyr,
     wesanderson,
     sas7bdat
-RoxygenNote: 5.0.1
+RoxygenNote: 6.1.0

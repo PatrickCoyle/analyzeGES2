@@ -5,8 +5,8 @@
 #' @param svydesignObj a svydesign object from which to create a svyglm object
 #' @param test.set a data frame whose variables match the svydesignObj, which is used to build ROC curves based on prediction
 #' @param plot a Boolean indicating whether to plot the ROC curves for each model
-#' @return A data frame of ROC curve values for each input formula, and a ggplot of these values
-#' @seealso \code{\link{predROC}} which this function wraps
+#' @return A data frame of ROC curve values for each input formula
+#' @seealso \code{\link{predROC}}
 #' @examples
 #' data(list = c("GES2013.drivers.design", "GES2013.drivers"))
 #' response <- "DROWSY"

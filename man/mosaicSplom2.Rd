@@ -17,4 +17,7 @@ A grid of 2x2 mosaics, one for each pair of the input factors
 \description{
 Create a grid of 2x2 survey-weighted mosaic plots
 }
-
+\examples{
+factors <- c("DROWSY", "HEAVY_TRUCK",  "INT_HWY",  "SEX_IM", "SPEEDREL")
+mosaicSplom2(factors)
+}

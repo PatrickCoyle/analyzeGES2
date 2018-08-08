@@ -17,4 +17,3 @@ A data frame of merged .sas7bdat files
 \description{
 Create .rda "master" file from .sas7bdat files
 }
-

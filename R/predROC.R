@@ -1,10 +1,10 @@
-#' Helper function for WeightedROC::WeightedROC, to produce a data frame of ROC curve values based on a svyglm object and a test set
+#' Produce a data frame of ROC curve values based on a svyglm object and a test set
 #'
 #' @param glm.obj a svyglm object
 #' @param newData a data frame whose variables are compatible with the svyglm object, for use in prediction
-#' @param pot a boolean indicating whether or not to generate a plot
+#' @param plot a boolean indicating whether or not to generate a plot
 #' @return A data frame of ROC curve values based on a svyglm object and a test set
-#' @seealso
+#' @seealso \code{\link{WeightedROC:WeightedROC}}
 #' @examples
 #' data(list = c("GES2013.drivers.design", "GES2013.drivers"))
 #' model <- svyglm(DROWSY ~ HEAVY_TRUCK + INT_HWY + SEX_IM + SPEEDREL,

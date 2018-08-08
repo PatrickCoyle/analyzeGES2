@@ -1,4 +1,4 @@
-#' Run shiny function
+#' Run shiny app for exploring correlations in GES data sets
 #' @examples
 #' runExample()
 #' @export
